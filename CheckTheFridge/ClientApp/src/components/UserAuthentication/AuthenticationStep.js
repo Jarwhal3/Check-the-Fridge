@@ -11,14 +11,14 @@ export default function AuthorizeUser() {
     const [token, setToken] = useState(localStorage.getItem('items') || '');
 
     useEffect(() => {
-        console.log(localStorage.getItem('items'));
+        console.log(sessionStorage.getItem('items'));
 
-        const items = JSON.parse(localStorage.getItem('items'));
+        const items = JSON.parse(sessionStorage.getItem('items'));
         if (items) {
             setToken(items);
         }
         else {
-            localStorage.setItem('items', JSON.stringify(token));
+            sessionStorage.setItem('items', JSON.stringify(token));
         }
     }, [token]);
 

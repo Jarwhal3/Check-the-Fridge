@@ -12,10 +12,6 @@ import {
 import './LoginPage.css';
 import ReactDOM from 'react-dom';
 
-export const loggedUser = {
-    userID: 0
-};
-
 //export const loggedUserContext = React.createContext(loggedUser);
 
 
@@ -45,10 +41,6 @@ export default function LoginPage({ userToken }) {
                 })
                 .then((responseJson) => {
                     setUserID(responseJson);
-                    console.log(responseJson);
-                    loggedUser.userID = responseJson;
-                    console.log("Logged user: ", loggedUser.userID)
-                    Object.freeze(loggedUser);
                     userToken(responseJson);
                     return responseJson;
                 })
