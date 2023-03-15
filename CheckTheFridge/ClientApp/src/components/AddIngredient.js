@@ -8,7 +8,6 @@ export function AddIngredient() {
   const [ingredientList, setIngredientList] = useState([]);
   const [name, setName] = useState();
   const [desc, setDesc] = useState();
-  // USE ME!
   const userID = sessionStorage.getItem('items');
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export function AddIngredient() {
       .then((data) => {
         const userIngredients = [];
         data.forEach((ing) => {
-          if (ing.appUserId == localStorage.getItem('items')) {
+          if (ing.appUserId == userID) {
             userIngredients.push(ing);
           }
         });
