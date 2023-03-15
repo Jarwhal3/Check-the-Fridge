@@ -1,5 +1,5 @@
 import Ingredient from './Ingredient';
-import  Scrollbars  from 'react-custom-scrollbars';
+import  Scrollbars  from 'react-custom-scrollbars-2';
 
 
 

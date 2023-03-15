@@ -3,7 +3,7 @@ import IngredientForm from './IngredientForm';
 import { v4 as uuidv4 } from 'uuid';
 import IngredientList from './IngredientList';
 import { Container, Row, Col } from 'reactstrap';
-import { loggedUser } from './UserAuthentication/LoginPage'
+
 
 
 export function AddIngredient() {
@@ -11,6 +11,8 @@ export function AddIngredient() {
     const [ingredientList, setIngredientList] = useState([]);
     const [name, setName] = useState();
     const [desc, setDesc] = useState();
+    // USE ME! 
+    const userID = sessionStorage.getItem('items');
 
     useEffect(() => {
         fetch('Ingredient/GetIngredients')
@@ -43,16 +45,12 @@ export function AddIngredient() {
 
     async function addIngredient(ingredient) {
 
-        console.log("Ingredient.form data: ", ingredient.name, ingredient.description, ingredient.id, ingredient.quantity, loggedUser.userID)
-        console.log(localStorage.getItem('items'));
-
         //const id = uuidv4();
         //ingredient.id = id;
         //let ingredientsList = await fetchAPIIngredients();
         //console.log("IngredientsList: ", ingredientsList);
 
-
-        await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.description + '/' + ingredient.quantity + '/' + ingredient.id + '/' + loggedUser.userID, { method: 'POST' })
+        await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.description + '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID, { method: 'POST' })
             .then((response) => {
                 if (response.ok) {
                     console.log('Ingredient created')
