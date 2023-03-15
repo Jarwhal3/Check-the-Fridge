@@ -1,15 +1,13 @@
 ﻿<Properties StartupConfiguration="{64B4EC76-9F30-49EA-AA8B-50E6908D40CB}|Default" GitUserInfo="UsingGIT">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CheckTheFridge/ClientApp/src/components/IngredientForm.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CheckTheFridge/ClientApp/src/components/AddIngredient.js">
     <Files>
-      <File FileName="CheckTheFridge/ClientApp/src/components/IngredientForm.js" Line="47" Column="38" />
-      <File FileName="CheckTheFridge/ClientApp/src/components/RecipeBrowser/getIngredients.js" Line="1" Column="1" />
-      <File FileName="CheckTheFridge/ClientApp/src/components/RecipeBrowser/RecipeList.js" Line="1" Column="1" />
+      <File FileName="CheckTheFridge/ClientApp/src/components/Home.js" Line="7" Column="13" />
+      <File FileName="CheckTheFridge/ClientApp/package.json" Line="18" Column="28" />
+      <File FileName="CheckTheFridge/ClientApp/src/components/IngredientForm.js" Line="4" Column="16" />
+      <File FileName="CheckTheFridge/ClientApp/src/components/AddIngredient.js" Line="50" Column="154" />
+      <File FileName="CheckTheFridge/ClientApp/src/components/IngredientList.js" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,17 +17,21 @@
               <Node name="ClientApp" expanded="True">
                 <Node name="src" expanded="True">
                   <Node name="components" expanded="True">
-                    <Node name="RecipeBrowser" expanded="True" />
-                    <Node name="IngredientForm.js" selected="True" />
+                    <Node name="AddIngredient.js" selected="True" />
                   </Node>
-                  <Node name="App.js" expanded="True" />
                 </Node>
               </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.CheckTheFridge PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>

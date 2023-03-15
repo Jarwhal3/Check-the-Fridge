@@ -18,8 +18,6 @@ const AddIngredient = ({ onSave }) => {
         setDescription(selectedOption.description);
         setid(selectedOption.id);
         setSelectedName(selectedOption);
-        console.log(`Option selected:`, selectedOption);
-        console.log(localStorage.getItem('items'));
 
     };
 
