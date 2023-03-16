@@ -12,7 +12,7 @@ namespace CheckTheFridge.Controllers
     public class ApplicationUserController : ControllerBase
     {
         private readonly DataContext _context;
-        public ApplicationUserController(DataContext context) 
+        public ApplicationUserController(DataContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace CheckTheFridge.Controllers
         [HttpGet("GetUsers")]
         public async Task<ActionResult<List<ApplicationUser>>> GetUsers()
         {
-             return Ok(await _context.ApplicationUsers.ToListAsync());
+            return Ok(await _context.ApplicationUsers.ToListAsync());
         }
 
         [HttpGet("{Id}/GetUser")]
@@ -32,10 +32,25 @@ namespace CheckTheFridge.Controllers
 
             if (user == null)
             {
-                return BadRequest("Doesnt Exist");
+                return BadRequest("User Does Not Exist");
             }
-          
+
             return Ok(user);
+        }
+
+        [HttpGet("{Id}/GetUserIngredients")]
+        public async Task<ActionResult<ApplicationUser>> GetUserIngredients(int Id)
+        {
+            var users = await _context.ApplicationUsers.Include("FridgeIngredients").ToListAsync();
+            var user = users.Find(x => x.Id == Id);
+
+
+            if (user == null)
+            {
+                return BadRequest("User Does Not Exist");
+            }
+
+            return Ok(user.FridgeIngredients);
         }
 
         //
@@ -46,15 +61,20 @@ namespace CheckTheFridge.Controllers
         {
             if (_context.ApplicationUsers.Any(u => u.Username == Username))
             {
-                return BadRequest("Username Taken");
+                return BadRequest("Username Already Taken");
             }
+
+            CreatePasswordHash(Password,
+               out byte[] passwordHash,
+               out byte[] passwordSalt);
 
             var user = new ApplicationUser
             {
-                FirstName= FirstName,
-                LastName= LastName,
-                Username= Username,
-                Password= Password
+                FirstName = FirstName,
+                LastName = LastName,
+                Username = Username,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             };
 
             _context.ApplicationUsers.Add(user);
@@ -68,15 +88,14 @@ namespace CheckTheFridge.Controllers
             var user = await _context.ApplicationUsers.FirstOrDefaultAsync(u => u.Username == Username);
             if (user == null)
             {
-                return BadRequest("NOpe");
+                return BadRequest("Username Does Not Exist");
             }
 
-            if (user.Password != Password)
+            if (!VerifyPasswordHash(Password, user.PasswordHash, user.PasswordSalt))
             {
-                return BadRequest("Password wrong");
+                return BadRequest("Password Is Incorrect");
             }
 
-            //return Ok($"Welcome back, {user.Username}! :)");
             return Ok(user.Id);
         }
 
@@ -90,7 +109,7 @@ namespace CheckTheFridge.Controllers
 
             if (user == null)
             {
-                return BadRequest("Doesnt Exist");
+                return BadRequest("Username Does Not Exist");
             }
 
             _context.ApplicationUsers.Remove(user);
@@ -102,46 +121,26 @@ namespace CheckTheFridge.Controllers
         //PUTS
         //
 
-        /* FORMERLY USING TEXT DATABASE
-         * 
-         * 
-        [HttpGet("get")]
-
-        
-        public async IAsyncEnumerable<ApplicationUser> GetUser()
+        //
+        //PRIVATE
+        //
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            var users = _context.ApplicationUsers.AsAsyncEnumerable();
-            await foreach (var u in users)
-                yield return u;
-        }
-        [HttpGet]
-        public ApplicationUser GetUser(string id)
-        {
-            DatabaseInterface db = new DatabaseInterface();
-            var user = new ApplicationUser();
-            user.Username = db.GetById(id, "username");
-            user.FirstName = db.GetById(id, "firstname");
-            user.LastName = db.GetById(id, "lastname");
-            user.Password = db.GetById(id, "password");
-            return user;
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
 
-        [HttpGet("PasswordValidation")]
-        public int PasswordValidation(string username, string password)
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            DatabaseInterface db = new DatabaseInterface();
-
-            return db.PasswordValidation(username, password);
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac
+                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
         }
-
-        [HttpPost("CreateUser")]
-        public int CreateUser(string firstname, string lastname, string username, string password)
-        {
-            DatabaseInterface db = new DatabaseInterface();
-
-            return db.CreateUser(firstname, lastname, username, password);
-        }
-        */
-
     }
 }

@@ -4,6 +4,7 @@ using CheckTheFridge.DBInterface;
 using CheckTheFridge.Models;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Query;
+using Azure.Core;
 
 namespace CheckTheFridge.Controllers
 {
@@ -38,28 +39,44 @@ namespace CheckTheFridge.Controllers
           
             return Ok(ingredient);
         }
-
+        /*
+        [HttpGet("GetAPIIngredients")]
+        public async Task<ActionResult<List<Ingredient>>> GetAPIIngredients()
+        {
+            var ingredientList = 
+            return Ok(await _context.Ingredients.ToListAsync());
+        }
+        */
         //
         //POSTS
         //
-        [HttpPost("Add/{Name}/{Description}/{Id}/{Quantity}")]
-        public async Task<IActionResult> Add(string Name, string Description, int Id, int Quantity)
+        [HttpPost("Add/{Name}/{Description}/{Quantity}/{MealDbId}/{UserId}")]
+        public async Task<IActionResult> Add(string Name, string Description, int Quantity, int MealDbId, int UserId)
         {
-            var match = _context.Ingredients.SingleOrDefault(i => i.Name == Name);
+            var user = await _context.ApplicationUsers.FindAsync(UserId);
 
-            if (match != null)
+            if (user == null)
             {
-                match.Quantity += Quantity;
-                return Ok("Ingredient exists, quantity updated.");
+                return BadRequest("User DNE");
+            }
+            if (user.FridgeIngredients != null)
+            {
+                var match = user.FridgeIngredients.Select(f => f.MealDbId == MealDbId);
+                if (match == null)
+                {
+                    return BadRequest("User already has Ingredient");
+                }
 
             }
-
+                                                     
             var ingredient = new Ingredient
             {
-                Name= Name,
-                Description= Description,
-                Quantity=Quantity,
-                Id =Id
+                Name = Name,
+                Description = Description,
+                Quantity = Quantity,
+                MealDbId = MealDbId,
+                AppUserId = UserId,
+                AppUser = user
             };
 
             _context.Ingredients.Add(ingredient);
@@ -67,18 +84,22 @@ namespace CheckTheFridge.Controllers
             return Ok("Ingredient created!");
         }
         //Edit ingredient
-        [HttpPost("Edit/{Name}/{Description}")]
-        public async Task<IActionResult> Edit(int Id, string Name, string Description)
+        [HttpPut("Edit/{Id}")]
+        public async Task<IActionResult> Edit(int Id, string ? Name, string ? Description, int Quantity = 0)
         {
             var ingredient = await _context.Ingredients.FindAsync(Id);
             if (ingredient == null)
             {
                 return BadRequest("Could not find ingredient");
             }
+            if (Name != null)
+                ingredient.Name = Name;
+            if (Description != null)
+                ingredient.Description = Description;
+            if (Quantity != 0)
+                ingredient.Quantity = Quantity;
 
-            ingredient.Name = Name;
-            ingredient.Description = Description;
-
+            await _context.SaveChangesAsync();
             return Ok("Ingredient edited!");
         }
 

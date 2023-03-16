@@ -231,5 +231,46 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+#ignore thumbnails created by windows
+Thumbs.db
+#Ignore files build by Visual Studio
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
 
 .vs/
+
+/.vs/CheckTheFridge/FileContentIndex/1417aaa7-c0ed-45e3-89dc-ef486c50566e.vsidx
+/.gitignore
+/.gitignore
+/.vs/CheckTheFridge/FileContentIndex/5cd41b1c-7055-4ed4-b17c-4e5ed5edbf58.vsidx
+/.vs/CheckTheFridge/FileContentIndex/d3269e35-40e8-40ff-877c-d2f940eef6e5.vsidx
+/.vs/CheckTheFridge/FileContentIndex/2d43406d-9d64-4d5a-8544-f8516307f949.vsidx
+/.vs/CheckTheFridge/FileContentIndex/d3269e35-40e8-40ff-877c-d2f940eef6e5.vsidx
+/.vs/CheckTheFridge/DesignTimeBuild/.dtbcache.v2
+/.vs/CheckTheFridge/v17/.futdcache.v2
+/.vs/CheckTheFridge/v17/.suo
+/.vs/ProjectEvaluation/checkthefridge.metadata.v5.2
+/.vs/ProjectEvaluation/checkthefridge.projects.v5.2

@@ -12,6 +12,9 @@ import {
 import './LoginPage.css';
 import ReactDOM from 'react-dom';
 
+//export const loggedUserContext = React.createContext(loggedUser);
+
+
 export default function LoginPage({ userToken }) {
     //Variables
     const [userID, setUserID] = useState(0);
@@ -38,7 +41,6 @@ export default function LoginPage({ userToken }) {
                 })
                 .then((responseJson) => {
                     setUserID(responseJson);
-                    console.log(responseJson);
                     userToken(responseJson);
                     return responseJson;
                 })

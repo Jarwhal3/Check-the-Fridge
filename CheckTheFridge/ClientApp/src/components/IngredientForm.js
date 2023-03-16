@@ -1,30 +1,56 @@
-import React, { useState, onSubmit, Component } from 'react';
+import React, { useState, onSubmit, Component, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import { v4 as uuidv4 } from 'uuid';
 import IngredientList from './IngredientList';
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 const AddIngredient = ({ onSave }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [id, setid] = useState(0);
+    const [selectedName, setSelectedName] = useState(null);
+    const [ingVal, setIngVal] = useState([])
+
+    const handleChange = (selectedOption) => {
+        setName(selectedOption.label);
+        setDescription(selectedOption.description);
+        setid(selectedOption.id);
+        setSelectedName(selectedOption);
+
+    };
+
+    
+    useEffect(() => {
+        fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`).then(res => res.json())
+            .then(data => {
+                const temp = [];
+                data.meals.forEach((ing) => {
+                    temp.push({ label: `${ing.strIngredient}`, value: `${ing.strIngredient}`, id: `${ing.idIngredient}`, description: `${ing.strDescription}` });
+                });
+                setIngVal(temp)
+            })
+    }, []);
 
 
     const onSubmit = (e) => {
         e.preventDefault();
         if (!name && !description) {
-            console.log('Ingredient and description not added)');        
+            console.log('Ingredient and description not added');        
         } else if (!name && description) {
-            console.log('Ingredient not added)');
+            console.log('Ingredient not added');
         } else if (name && !description) {
-            console.log('Description not added)');
+            console.log('Description not added');
         } else {
             onSave({ name, description, quantity, id });
         }
         setName('');
+        setSelectedName(null);
         setDescription('');
         setQuantity(1);
-        //setid('');
+        setid('');
+
     }
 
     const updateQuantity = (val) => {
@@ -35,7 +61,7 @@ const AddIngredient = ({ onSave }) => {
         <Form onSubmit={onSubmit}>
             <FormGroup>
                 <Label for="ingredient">Ingredient</Label>
-                <Input id="ingredient" type="text" placeholder="add ingredient name" value={name} onChange={(e) => setName(e.target.value)} />
+                <Select value={selectedName} options={ingVal} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
                 <Label for="description">Description</Label>

@@ -4,19 +4,6 @@ import getIngredients from './getIngredients';
 import ingredientAvailable from './getInventory';
 import './recipeBrowseStyles.css';
 
-const user1 = [
-    { Name: 'Chicken' },
-    { Name: 'Olive Oil' },
-    { Name: 'Garlic' },
-    { Name: 'Salt' },
-    { Name: 'Onions' },
-    { Name: 'Tomato' },
-    { Name: 'Chicken Thighs' },
-    { Name: 'Butter' },
-    { Name: "Peanut Butter" },
-    { Name: "Sugar" },
-    { Name: "Egg" }
-];
 
 const Ingredient = (ing) => {
 
@@ -36,24 +23,25 @@ const Ingredient = (ing) => {
         )
 }
 const RecipeItem = (getRecipe) => {
-
+    
     function findAmount(ing) {
         let amount = 0;
         for (let i = 0; i < ing.length; i++) {
-            if (ing[i].Available == true) { amount += 1;}
+            if (ing[i].Available == true) { amount += 1; }
         }
         return amount;
     }
-    //const [userIngredients, setUserIngredients] = useState(); // Needs fetch call
-
-    const [ingredientsList, setIngredients] = useState(ingredientAvailable(getIngredients(getRecipe), user1));
-    const [avail, setAvail] = useState(0);
-    const [total, setTotal] = useState(0);
+    const [ingredientsList, setIngredients] = useState(ingredientAvailable(getIngredients(getRecipe), getRecipe.user));
+    const [avail, setAvail] = useState(findAmount(ingredientsList));
+    const [total, setTotal] = useState(ingredientsList.length);
 
     useEffect(() => {
-        setIngredients(ingredientAvailable(getIngredients(getRecipe),user1));
         setAvail(findAmount(ingredientsList));
         setTotal(ingredientsList.length);
+    }, [ingredientsList]);
+
+    useEffect(() => {
+        setIngredients(ingredientAvailable(getIngredients(getRecipe), getRecipe.user));
     }, [getRecipe]);
     return (
         <>
