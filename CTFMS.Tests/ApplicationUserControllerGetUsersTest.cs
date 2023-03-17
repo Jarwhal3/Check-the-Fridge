@@ -22,7 +22,8 @@ namespace CTFMS.Tests
 
             var data = new List<ApplicationUser>
             {
-                new ApplicationUser { Id = 1, FirstName = "A", LastName = "B", Username = "AB", PasswordHash = GetHash("password"), PasswordSalt = GetSalt("password"), FridgeIngredients=null},           
+                new ApplicationUser { Id = 1, FirstName = "A", LastName = "B", Username = "AB", PasswordHash = GetHash("password"), PasswordSalt = GetSalt("password"), FridgeIngredients=null},
+                new ApplicationUser { Id = 2, FirstName = "C", LastName = "D", Username = "CD", PasswordHash = GetHash("123456789"), PasswordSalt = GetSalt("123456789"), FridgeIngredients=null},
             }.AsQueryable();
 
             var mockSet = new Mock<Microsoft.EntityFrameworkCore.DbSet<ApplicationUser>>();
@@ -49,7 +50,13 @@ namespace CTFMS.Tests
             Assert.AreEqual("A", users[0].FirstName);     
             Assert.AreEqual("B", users[0].LastName);      
             Assert.AreEqual("AB", users[0].Username);      
-            Assert.AreEqual(null, users[0].FridgeIngredients);                 
+            Assert.AreEqual(null, users[0].FridgeIngredients);  
+            
+            Assert.AreEqual(2, users.Count);
+            Assert.AreEqual("C", users[1].FirstName);     
+            Assert.AreEqual("D", users[1].LastName);      
+            Assert.AreEqual("CD", users[1].Username);      
+            Assert.AreEqual(null, users[1].FridgeIngredients); 
             */
         }
 
