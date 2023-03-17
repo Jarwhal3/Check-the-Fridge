@@ -45,10 +45,11 @@ namespace CTFMS.Tests
             var users = await service.GetUsers();
 
             /*
-            Assert.AreEqual(3, users.Count);
-            Assert.AreEqual("AAA", users[0].FirstName);
-            Assert.AreEqual("BBB", users[1].FirstName);
-            Assert.AreEqual("ZZZ", users[2].FirstName);
+            Assert.AreEqual(1, users.Count);
+            Assert.AreEqual("A", users[0].FirstName);     
+            Assert.AreEqual("B", users[0].LastName);      
+            Assert.AreEqual("AB", users[0].Username);      
+            Assert.AreEqual(null, users[0].FridgeIngredients);                 
             */
         }
 
