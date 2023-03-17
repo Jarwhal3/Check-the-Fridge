@@ -8,7 +8,8 @@ import LoginPage from "./LoginPage";
  * allow user to view webpage contents */
 
 export default function AuthorizeUser() {
-    const [token, setToken] = useState(localStorage.getItem('items') || '');
+
+  const [token, setToken] = useState(sessionStorage.getItem('items') || '');
 
     useEffect(() => {
         console.log(sessionStorage.getItem('items'));
@@ -21,6 +22,7 @@ export default function AuthorizeUser() {
             sessionStorage.setItem('items', JSON.stringify(token));
         }
     }, [token]);
+
 
   if (!token) {
     return <LoginPage userToken={setToken} />;

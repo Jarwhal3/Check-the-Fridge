@@ -1,12 +1,34 @@
 ﻿import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecipeItem from "./RecipeItem";
 import './recipeBrowseStyles.css';
 import { getAllRecipes, getMatchingRecipes } from "./getAllRecipes.js";
 
 const Recipe = () => {
+    const userID = sessionStorage.getItem('items');
     const [search, setSearch] = useState("");
     const [recipe, setRecipe] = useState();
+    const [userIngredients, setUserIngredients] = useState([]);
+
+    async function getIngredientList() {
+        fetch('Ingredient/GetIngredients')
+            .then((results) => {
+                return results.json();
+            })
+            .then((data) => {
+                const userIngredients = [];
+                data.forEach((ing) => {
+                    if (ing.appUserId == userID) {
+                        userIngredients.push(ing);
+                    }
+                });
+                setUserIngredients(userIngredients);
+            });
+    }
+
+    useEffect(() => {
+        getIngredientList();
+    },[recipe]);
     const searchMeal = (evt) => {
         if (evt.key == "Enter") {
             fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`).then(res => res.json()).then(data => { console.log("Data.meals: ", data.meals);  setRecipe(data.meals); setSearch("") })
@@ -47,7 +69,7 @@ const Recipe = () => {
                         (recipe == null) ? <p className="notSearch">Not found</p> :
                             recipe.map((res) => {
                                 return (
-                                    <RecipeItem data={res} />)
+                                    <RecipeItem data={res} user={userIngredients} />)
                             }
                             )
                     }

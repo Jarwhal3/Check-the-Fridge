@@ -38,3 +38,8 @@
     padding-bottom: 30px;
 }
 
+.isAvailable {
+    color: green;
+    font-weight: bold;
+}
+
