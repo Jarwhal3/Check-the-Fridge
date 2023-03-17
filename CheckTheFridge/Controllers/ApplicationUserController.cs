@@ -102,7 +102,7 @@ namespace CheckTheFridge.Controllers
         //
         //DELETES
         //
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public async Task<IActionResult> Delete(int Id)
         {
             var user = await _context.ApplicationUsers.FindAsync(Id);

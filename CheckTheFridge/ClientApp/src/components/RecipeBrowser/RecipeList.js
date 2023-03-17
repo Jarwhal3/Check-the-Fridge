@@ -43,9 +43,7 @@ const Recipe = () => {
     }
 
     const displayAllMeals = (evt) => {        
-        if (evt.key == "Enter") {
             getAllRecipes().then(res => { console.log("Res: ", res); setRecipe(res) });
-        }
     }
 
     return (
