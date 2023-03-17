@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckTheFridge", "CheckTheFridge.csproj", "{855220DD-D545-4C43-97F9-90041B7B64FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTFMS.Tests", "..\CTFMS.Tests\CTFMS.Tests.csproj", "{3511C112-5D81-46D9-80C4-87E5AF1340EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{855220DD-D545-4C43-97F9-90041B7B64FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{855220DD-D545-4C43-97F9-90041B7B64FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{855220DD-D545-4C43-97F9-90041B7B64FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3511C112-5D81-46D9-80C4-87E5AF1340EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3511C112-5D81-46D9-80C4-87E5AF1340EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3511C112-5D81-46D9-80C4-87E5AF1340EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3511C112-5D81-46D9-80C4-87E5AF1340EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

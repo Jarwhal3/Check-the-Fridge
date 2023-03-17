@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:44498",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "C:\\Users\\cverb\\OneDrive\\Desktop\\School\\Github\\Check-the-Fridge\\CheckTheFridge\\ClientApp\\",
+"MaxTimeoutInSeconds": "120"
+}
+}
