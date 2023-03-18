@@ -43,10 +43,6 @@ export function AddIngredient() {
       });
   }
 
-  function doesIngredientExist(ingredient, ingredientList) {
-    for (const element in ingredientList) {
-    }
-  }
 
   async function addIngredient(ingredient) {
     await fetch(

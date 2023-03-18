@@ -8,9 +8,7 @@ const Ingredient = ({ ingredient, onDelete, onEdit }) => {
         <ListGroup className="task">
             <ListGroupItem>
                 <div>
-                    <p className="ingredientName">
-                        <span className="textBold">Ingredient:</span> {ingredient.name}
-                    </p>
+                    <p className="ingredientName">Ingredient: {ingredient.name}</p>
                     <p className="ingredientDesc"><span className="textBold">Description:</span> {ingredient.description}
                     </p>
                     <p className="ingredientID"><span className="textBold">ID:</span> {ingredient.id}

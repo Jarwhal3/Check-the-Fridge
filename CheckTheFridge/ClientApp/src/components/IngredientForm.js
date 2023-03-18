@@ -29,8 +29,8 @@ const AddIngredient = ({ onSave }) => {
                 data.meals.forEach((ing) => {
                     temp.push({ label: `${ing.strIngredient}`, value: `${ing.strIngredient}`, id: `${ing.idIngredient}`, description: `${ing.strDescription}` });
                 });
-                setIngVal(temp)
-            })
+                setIngVal(temp);
+            });
     }, []);
 
 
