@@ -1,8 +1,3 @@
-
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import { Button, Row, Col, Container } from 'reactstrap';
-
-
 const Ingredient = ({ ingredient }) => {
     return (
         <div>
