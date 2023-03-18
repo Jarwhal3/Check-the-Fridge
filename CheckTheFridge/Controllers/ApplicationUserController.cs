@@ -23,7 +23,7 @@ namespace CheckTheFridge.Controllers
         public async Task<ActionResult<List<ApplicationUser>>> GetUsers()
         {
             return Ok(await _context.ApplicationUsers.ToListAsync());
-        }
+        }   
 
         [HttpGet("{Id}/GetUser")]
         public async Task<ActionResult<ApplicationUser>> GetUser(int Id)
@@ -141,6 +141,6 @@ namespace CheckTheFridge.Controllers
                     .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);
             }
-        }
+        }      
     }
 }
