@@ -3,16 +3,26 @@ import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import Ingredient from "./Ingredient";
 
-const tempingredient = {
-    name: "Avo",
-    desc: "temp desc",
-    id: 1,
-    quan: 2
-};
 
 test("Display Ingredient Test", () => {
+    const tempingredient = {
+        name: "Avo",
+        description: "temp desc",
+        id: 100,
+        quantity: 2
+    };
+
     render(<Ingredient ingredient={tempingredient}/>);
 
-    const ingText = screen.getByText(/Ingredient: Avo/i);
-    expect(ingText).toBeInTheDocument();
+    const nameText = screen.getByText(/Ingredient: Avo/i);
+    expect(nameText).toBeInTheDocument();
+
+    const descriptionText = screen.getByText(/Description: temp desc/i);
+    expect(descriptionText).toBeInTheDocument();
+
+    const idText = screen.getByText(/ID: 100/i);
+    expect(idText).toBeInTheDocument();
+
+    const quantityText = screen.getByText(/Quantity: 2/i);
+    expect(quantityText).toBeInTheDocument();
 });
