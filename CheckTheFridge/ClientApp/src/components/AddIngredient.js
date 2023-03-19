@@ -5,77 +5,88 @@ import IngredientList from './IngredientList';
 import { Container, Row, Col } from 'reactstrap';
 
 export function AddIngredient() {
-  const [ingredientList, setIngredientList] = useState([]);
-  const [name, setName] = useState();
-  const [desc, setDesc] = useState();
-  const userID = sessionStorage.getItem('items');
+    const [ingredientList, setIngredientList] = useState([]);
+    const [name, setName] = useState();
+    const [desc, setDesc] = useState();
+    const [duplicate, setDuplicate] = useState({});
+    const userID = sessionStorage.getItem('items');
 
-  useEffect(() => {
-    getIngredientList();
-  }, []);
+    useEffect(() => {
+        getIngredientList();
+    }, []);
 
-  async function getIngredientList() {
-    fetch('Ingredient/GetIngredients')
-      .then((results) => {
-        return results.json();
-      })
-      .then((data) => {
-        const userIngredients = [];
-        data.forEach((ing) => {
-          if (ing.appUserId == userID) {
-            userIngredients.push(ing);
-          }
-        });
-        setIngredientList(userIngredients);
-      });
-  }
-
-  async function fetchAPIIngredients() {
-    await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`)
-      .then((response) => response.json())
-      .then((data) => {
-        try {
-          console.log('Response data from fetchAPI ', data);
-          return data;
-        } catch (err) {
-          console.log(err);
-        }
-      });
-  }
-
-  function doesIngredientExist(ingredient, ingredientList) {
-    for (const element in ingredientList) {
+    async function getIngredientList() {
+        fetch('Ingredient/GetIngredients').then((results) => { return results.json(); })
+            .then((data) => {
+                const userIngredients = [];
+                data.forEach((ing) => {
+                    if (ing.appUserId == userID) {
+                        userIngredients.push(ing);
+                    }
+                });
+                setIngredientList(userIngredients);
+            });
     }
-  }
 
-  async function addIngredient(ingredient) {
-    await fetch(
-      'Ingredient/Add/' +
-        ingredient.name +
-        '/' +
-        ingredient.description +
-        '/' +
-        ingredient.quantity +
-        '/' +
-        ingredient.id +
-        '/' +
-        userID,
-      { method: 'POST' }
-    )
-      .then((response) => {
-        if (response.ok) {
-          console.log('Ingredient created');
-          console.log(response);
-          getIngredientList();
-        } else {
-          throw new Error('Ingredient not created.', response.json());
+    const submitIngredient = (ingredient) => {
+        const ingExists = checkDuplicate(ingredient);
+
+        if (ingExists === true) {
+            addIngredientQuantity(duplicate);
         }
-      })
+        else if(ingExists === false) {
+            addIngredient(ingredient);
+        }
+    }
 
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
+    function checkDuplicate(ingredient){
+        ingredientList.forEach(temp => {
+            if (ingredient.name === temp.name) {
+                temp.quantity += 1;
+                console.log("Ingredient Exists, added one to quantity");
+                setDuplicate(temp);
+                return true;
+            }
+            else {
+                console.log("Ing no exist");
+                return false;
+            }
+        })
+    }
+
+
+
+    async function addIngredientQuantity(ingredient) {
+            await fetch('Ingredient/Edit/' + ingredient.id,
+                { method: 'PUT' })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log('Ingredient edit');
+                    }
+                    else { throw new Error('Ingredient not edit.', response.json()); }
+                })
+                .catch((error) => { console.log(error); });
+
+        
+    }
+
+    async function addIngredient(ingredient) {
+        checkDuplicate(ingredient);
+
+            await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.description +
+                '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID,
+                { method: 'POST' })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log('Ingredient created');
+                        getIngredientList();
+                    }
+                    else { throw new Error('Ingredient not created.', response.json()); }
+                })
+                .catch((error) => { console.log(error); });   
+        
+    }
 
   // Delete Ingredient
   const deleteIngredient = (id) => {
@@ -118,7 +129,7 @@ export function AddIngredient() {
               Enter the ingredient name, description, and quantity about the
               ingredient to add to your fridge.
             </h5>
-            <IngredientForm onSave={addIngredient} />
+            <IngredientForm onSave={submitIngredient} />
           </Col>
           <Col className='border rounded p-5 mx-2 mt-3'>
             <h1 style={{ textAlign: 'center' }}>
