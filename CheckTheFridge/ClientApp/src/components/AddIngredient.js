@@ -31,33 +31,35 @@ export function AddIngredient() {
     const submitIngredient = (ingredient) => {
         const ingExists = checkDuplicate(ingredient);
 
-        if (ingExists === true) {
+        if (ingExists == true) {
+            console.log("duplicate:" + duplicate.name);
             addIngredientQuantity(duplicate);
         }
-        else if(ingExists === false) {
+        else if (ingExists == false) {
             addIngredient(ingredient);
         }
     }
 
 
-    function checkDuplicate(ingredient){
-        ingredientList.forEach(temp => {
-            if (ingredient.name === temp.name) {
-                temp.quantity += 1;
-                console.log("Ingredient Exists, added one to quantity");
-                setDuplicate(temp);
-                return true;
+    function checkDuplicate(ingredient) {
+        const temp = ingredientList.find(temp => ingredient.name === temp.name);
+
+        if (temp === undefined) {
+            console.log("Ing no exist");
+            addIngredient(ingredient);
             }
-            else {
-                console.log("Ing no exist");
-                return false;
-            }
-        })
+        else if (temp !== undefined)  {
+            temp.quantity += 1;
+            console.log("Ingredient Exists, added one to quantity");
+            addIngredientQuantity(temp);
+        }
+       
     }
 
 
 
     async function addIngredientQuantity(ingredient) {
+        console.log(ingredient.quantity);
             await fetch('Ingredient/Edit/' + ingredient.id,
                 { method: 'PUT' })
                 .then((response) => {
@@ -72,8 +74,6 @@ export function AddIngredient() {
     }
 
     async function addIngredient(ingredient) {
-        checkDuplicate(ingredient);
-
             await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.description +
                 '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID,
                 { method: 'POST' })
@@ -129,7 +129,7 @@ export function AddIngredient() {
               Enter the ingredient name, description, and quantity about the
               ingredient to add to your fridge.
             </h5>
-            <IngredientForm onSave={submitIngredient} />
+            <IngredientForm onSave={checkDuplicate} />
           </Col>
           <Col className='border rounded p-5 mx-2 mt-3'>
             <h1 style={{ textAlign: 'center' }}>
