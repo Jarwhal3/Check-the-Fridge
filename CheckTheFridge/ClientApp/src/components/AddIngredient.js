@@ -34,7 +34,10 @@ export function AddIngredient() {
             addIngredient(ingredient);
             }
         else if (match !== undefined) {
-            match.notes = match.description + " " + ingredient.notes 
+            if (match.description == 'None') {
+                match.description = '';
+            }
+            match.notes = match.description + '\n' + ingredient.notes 
             match.quantity += ingredient.quantity;
             console.log("Ingredient Exists, added one to quantity");
             addIngredientQuantity(match);
@@ -43,7 +46,7 @@ export function AddIngredient() {
     }
 
     async function addIngredientQuantity(ingredient) {
-            await fetch('Ingredient/Edit/' + ingredient.id + '?Description=' + ingredient.notes + '&&' + 'Quantity=' + ingredient.quantity,
+        await fetch(('Ingredient/Edit/' + ingredient.id + '?Description=' + ingredient.notes + '&&' + 'Quantity=' + ingredient.quantity).replace('#', '%23'),
                 { method: 'PUT' })
                 .then((response) => {
                     if (response.ok) {
@@ -58,8 +61,13 @@ export function AddIngredient() {
     }
 
     async function addIngredient(ingredient) {
-            await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.notes +
-                '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID,
+        if (!ingredient.notes) {
+            ingredient.notes = "None"
+        }
+            console.log(ingredient.notes);
+
+            await fetch(encodeURI('Ingredient/Add/' + ingredient.name + '/' + ingredient.notes +
+                '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID).replace('#','%23'),
                 { method: 'POST' })
                 .then((response) => {
                     if (response.ok) {
@@ -115,8 +123,7 @@ export function AddIngredient() {
           <Col className='border rounded p-5 mx-2 mt-3'>
             <h1 style={{ textAlign: 'center' }}>New Ingredient</h1>
             <h5 className='m-4' style={{ textAlign: 'center' }}>
-              Enter the ingredient name, description, and quantity about the
-              ingredient to add to your fridge.
+              Enter an ingredient from your fridge (...or pantry)
             </h5>
             <IngredientForm onSave={checkDuplicate} />
           </Col>

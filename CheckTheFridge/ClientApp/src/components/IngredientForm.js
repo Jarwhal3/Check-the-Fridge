@@ -62,15 +62,15 @@ const IngredientForm = ({ onSave }) => {
             </FormGroup>
             <FormGroup>
                 <Label for="notes">Notes</Label>
-                <Input id="notes" type="text" placeholder="optional notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                <Input id="notes" type="text" placeholder="Optional Notes." value={notes} onChange={(e) => setNotes(e.target.value)} />
             </FormGroup>
             <FormGroup>
                 <Label for="quantity">Quantity</Label>
                 <Container className="d-flex justify-content-start gx-0">
                     <Row className="gx-0" style={{ width: "50%" }}>
-                        <Col md={3}><Button outline color="secondary" style={{ width: "100%" }} onClick={() => updateQuantity(-1)}>-</Button></Col>
+                        <Col md={4}><Button outline color="secondary" style={{ width: "100%" }} onClick={() => updateQuantity(-1)}>-</Button></Col>
                         <Col md={4}><Input className="text-center" type="text" value={quantity} onChange={(e) => setQuantity(e.target.value)}></Input></Col>
-                        <Col md={3}><Button outline color="secondary" style={{ width: "100%" }}  onClick={() => updateQuantity(1)}>+</Button></Col>
+                        <Col md={4}><Button outline color="secondary" style={{ width: "100%" }}  onClick={() => updateQuantity(1)}>+</Button></Col>
                     </Row>
                 </Container>
             </FormGroup>
