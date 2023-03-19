@@ -14,7 +14,7 @@ const IngredientList = ({ ingredientList, onDelete, onEdit }) => {
                             <Container>
                                 <Ingredient ingredient={ingredient} />
                                 <Row>
-                                    <Col><Button className="w-100" onClick={() => onEdit(ingredient.id)}>Edit</Button></Col>
+                                    <Col><Button className="w-100" onClick={() => onEdit(ingredient)}>Edit</Button></Col>
                                     <Col><Button className="w-100" onClick={() => onDelete(ingredient.id)}>Delete</Button></Col>
                                 </Row>
                             </Container>

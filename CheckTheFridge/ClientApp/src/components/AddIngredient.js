@@ -1,13 +1,19 @@
 import React, { Component, useState, useEffect } from 'react';
 import IngredientForm from './IngredientForm';
-import { v4 as uuidv4 } from 'uuid';
 import IngredientList from './IngredientList';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export function AddIngredient() {
     const [ingredientList, setIngredientList] = useState([]);
     const [duplicate, setDuplicate] = useState({});
     const userID = sessionStorage.getItem('items');
+    const [modal, setModal] = useState(false);
+    const [currentName, setCurrentName] = useState("");
+
+    const toggle = (ingredient) => {
+        setModal(!modal);
+        setCurrentName(ingredient.name);
+    }
 
     useEffect(() => {
         getIngredientList();
@@ -97,23 +103,17 @@ export function AddIngredient() {
 
   // Edit Ingredient
   const editIngredient = (id) => {
-    const name = prompt('Ingredient');
-    const desc = prompt('Description');
-    let data = JSON.parse(localStorage.getItem('ingredientAdded'));
-    const myData = data.map((x) => {
-      if (x.id === id) {
-        return {
-          ...x,
-          name: name,
-          desc: desc,
-          id: uuidv4(),
-        };
-      }
-      return x;
-    });
-    console.log('Ingredient edited');
-    localStorage.setItem('IngredientAdded', JSON.stringify(myData));
-    window.location.reload();
+
+     /* await fetch(('Ingredient/Edit/' + id + '?Description=' + ingredient.notes + '&&' + 'Quantity=' + ingredient.quantity).replace('#', '%23'),
+          { method: 'PUT' })
+          .then((response) => {
+              if (response.ok) {
+                  console.log('Ingredient edit');
+                  getIngredientList();
+              }
+              else { throw new Error('Ingredient not edit.', response.json()); }
+          })
+          .catch((error) => { console.log(error); });*/
   };
 
   return (
@@ -129,17 +129,26 @@ export function AddIngredient() {
           </Col>
           <Col className='border rounded p-5 mx-2 mt-3'>
             <h1 style={{ textAlign: 'center' }}>
-              Ingredient List: {ingredientList.length}
+              Total Ingredients: {ingredientList.length}
             </h1>
             {ingredientList.length > 0 ? (
               <IngredientList
                 ingredientList={ingredientList}
                 onDelete={deleteIngredient}
-                onEdit={editIngredient}
-              />
+                onEdit={toggle}
+                          />
+   
             ) : (
               'No Ingredients Found!'
-            )}
+                          )}
+                      <Modal isOpen={modal} toggle={toggle}>
+                          <ModalHeader toggle={toggle}> Edit Ingredient: {currentName} </ModalHeader>
+                          <ModalBody>
+                              <p>Notes</p>
+                              <input></input>
+                               <button>Save Changes</button>
+                          </ModalBody>
+                      </Modal>
           </Col>
         </React.Fragment>
       </Row>
