@@ -24,7 +24,7 @@ const IngredientForm = ({ onSave }) => {
             .then(data => {
                 const temp = [];
                 data.meals.forEach((ing) => {
-                    temp.push({ label: `${ing.strIngredient}`, value: `${ing.strIngredient}`, id: `${ing.idIngredient}`, description: `${ing.strDescription}` });
+                    temp.push({ label: `${ing.strIngredient}`, value: `${ing.strIngredient}`, id: `${ing.idIngredient}`, notes: `${ing.strDescription}` });
                 });
                 setIngredientValues(temp)
             })

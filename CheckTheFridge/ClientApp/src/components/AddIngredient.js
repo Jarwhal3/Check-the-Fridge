@@ -28,29 +28,27 @@ export function AddIngredient() {
 
 
     function checkDuplicate(ingredient) {
-        const temp = ingredientList.find(temp => ingredient.name === temp.name);
-
-        if (temp === undefined) {
+        const match = ingredientList.find(temp => ingredient.name === temp.name);
+        if (match === undefined) {
             console.log("Ing no exist");
             addIngredient(ingredient);
             }
-        else if (temp !== undefined)  {
-            temp.quantity += 1;
+        else if (match !== undefined) {
+            match.notes = match.description + " " + ingredient.notes 
+            match.quantity += ingredient.quantity;
             console.log("Ingredient Exists, added one to quantity");
-            addIngredientQuantity(temp);
+            addIngredientQuantity(match);
         }
        
     }
 
-
-
     async function addIngredientQuantity(ingredient) {
-        console.log(ingredient.quantity);
-            await fetch('Ingredient/Edit/' + ingredient.id,
+            await fetch('Ingredient/Edit/' + ingredient.id + '?Description=' + ingredient.notes + '&&' + 'Quantity=' + ingredient.quantity,
                 { method: 'PUT' })
                 .then((response) => {
                     if (response.ok) {
                         console.log('Ingredient edit');
+                        getIngredientList();
                     }
                     else { throw new Error('Ingredient not edit.', response.json()); }
                 })
@@ -60,7 +58,7 @@ export function AddIngredient() {
     }
 
     async function addIngredient(ingredient) {
-            await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.description +
+            await fetch('Ingredient/Add/' + ingredient.name + '/' + ingredient.notes +
                 '/' + ingredient.quantity + '/' + ingredient.id + '/' + userID,
                 { method: 'POST' })
                 .then((response) => {
@@ -75,14 +73,19 @@ export function AddIngredient() {
     }
 
   // Delete Ingredient
-  const deleteIngredient = (id) => {
-    const deleteIngredient = ingredientList.filter(
-      (ingredient) => ingredient.id !== id
-    );
-    setIngredientList(deleteIngredient);
-    console.log('Deleted an ingredient');
-    localStorage.setItem('ingredientAdded', JSON.stringify(deleteIngredient));
+ async function deleteIngredient(id){
+      await fetch('Ingredient?Id=' + id,
+          { method: 'DELETE' })
+          .then((response) => {
+              if (response.ok) {
+                  console.log('Ingredient Deleted');
+                  getIngredientList();
+              }
+              else { throw new Error('Ingredient not deleted.', response.json()); }
+          })
+          .catch((error) => { console.log(error); });
   };
+
 
   // Edit Ingredient
   const editIngredient = (id) => {
