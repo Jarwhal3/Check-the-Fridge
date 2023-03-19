@@ -6,8 +6,6 @@ import { Container, Row, Col } from 'reactstrap';
 
 export function AddIngredient() {
     const [ingredientList, setIngredientList] = useState([]);
-    const [name, setName] = useState();
-    const [desc, setDesc] = useState();
     const [duplicate, setDuplicate] = useState({});
     const userID = sessionStorage.getItem('items');
 
@@ -26,18 +24,6 @@ export function AddIngredient() {
                 });
                 setIngredientList(userIngredients);
             });
-    }
-
-    const submitIngredient = (ingredient) => {
-        const ingExists = checkDuplicate(ingredient);
-
-        if (ingExists == true) {
-            console.log("duplicate:" + duplicate.name);
-            addIngredientQuantity(duplicate);
-        }
-        else if (ingExists == false) {
-            addIngredient(ingredient);
-        }
     }
 
 
