@@ -1,6 +1,8 @@
 ﻿import AddIngredient from '.././AddIngredient.js';
 import getIngredients from './getIngredients.js'
 
+const userID = sessionStorage.getItem('items');
+
 //This function gets -all- recipes from the API. From what I could tell,
 //there was no built-in way to do this. So this searches each letter, 
 //and appends all the results to one list.
@@ -40,13 +42,17 @@ function checkForIngredientMatch(recipe, userIngredients) {
     var i = 0;
     let match = false;
 
+    //Do-While loop goes through each
     do {
+        //Compare each user ingredient to a single ingredient of the recipe:
         for (const element in userIngredients) {
-            //console.log("Comparing ", userIngredients[element].name, "to ", recipeIngredients[i][0])
-            match += userIngredients[element].name === recipeIngredients[i][0]
+            match = userIngredients[element].name === recipeIngredients[i].Name
+
+            //If we find a match, break early to save time:
+            if (match)
+                break
         }
         ++i;
-        //console.log("Match === ", match)
     } while (i < recipeIngredients.length && match === true)
 
     return match
@@ -55,8 +61,8 @@ function checkForIngredientMatch(recipe, userIngredients) {
 
 export async function getMatchingRecipes() {
     //First fetch all recipes and the user ingredients:
-    let [allRecipes, userIngredients] = await Promise.all([getAllRecipes(), fetch('Ingredient/GetIngredients').then(res => res.json())])
-
+    let [allRecipes, userIngredients] = await Promise.all([getAllRecipes(), fetch('ApplicationUser/' + userID + '/GetUserIngredients').then(res => res.json())])
+    
     let match = false;
     let matchedRecipes = new Array();
 
