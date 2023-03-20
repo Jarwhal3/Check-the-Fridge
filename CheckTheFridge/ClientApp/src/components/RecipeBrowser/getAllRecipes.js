@@ -1,7 +1,7 @@
 ﻿import AddIngredient from '.././AddIngredient.js';
 import getIngredients from './getIngredients.js'
 
-const userID = sessionStorage.getItem('items');
+//const userID = sessionStorage.getItem('items');
 
 //This function gets -all- recipes from the API. From what I could tell,
 //there was no built-in way to do this. So this searches each letter, 
@@ -60,6 +60,7 @@ function checkForIngredientMatch(recipe, userIngredients) {
 
 
 export async function getMatchingRecipes() {
+    const userID = sessionStorage.getItem("items");
     //First fetch all recipes and the user ingredients:
     let [allRecipes, userIngredients] = await Promise.all([getAllRecipes(), fetch('ApplicationUser/' + userID + '/GetUserIngredients').then(res => res.json())])
     

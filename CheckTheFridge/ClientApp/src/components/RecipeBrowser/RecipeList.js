@@ -18,7 +18,7 @@ const Recipe = () => {
             .then((data) => {
                 const userIngredients = [];
                 data.forEach((ing) => {
-                    if (ing.appUserId == userID) {
+                    if (ing.appUserId === userID) {
                         userIngredients.push(ing);
                     }
                 });
@@ -30,7 +30,7 @@ const Recipe = () => {
         getIngredientList();
     },[recipe]);
     const searchMeal = (evt) => {
-        if (evt.key == "Enter") {
+        if (evt.key === "Enter") {
             fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`).then(res => res.json()).then(data => { console.log("Data.meals: ", data.meals);  setRecipe(data.meals); setSearch("") })
         }
        
@@ -43,7 +43,7 @@ const Recipe = () => {
     }
 
     const displayAllMeals = (evt) => {        
-        if (evt.key == "Enter") {
+        if (evt.key === "Enter") {
             getAllRecipes().then(res => { console.log("Res: ", res); setRecipe(res) });
         }
     }
@@ -60,7 +60,7 @@ const Recipe = () => {
                 </div>
 
                 <div className="button">
-                    <input type="button" value="Get matching recipes" className="button" onClick={displayMatchingMeals} />
+                    <input type="button" value="What can I make with what I have?" className="button" onClick={displayMatchingMeals} />
                 </div>
 
                 <h3>Results:</h3>
