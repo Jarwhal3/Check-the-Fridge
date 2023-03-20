@@ -31,6 +31,7 @@ const RecipeItem = (getRecipe) => {
         }
         return amount;
     }
+
     const [ingredientsList, setIngredients] = useState(ingredientAvailable(getIngredients(getRecipe), getRecipe.user));
     const [avail, setAvail] = useState(findAmount(ingredientsList));
     const [total, setTotal] = useState(ingredientsList.length);
@@ -43,6 +44,7 @@ const RecipeItem = (getRecipe) => {
     useEffect(() => {
         setIngredients(ingredientAvailable(getIngredients(getRecipe), getRecipe.user));
     }, [getRecipe]);
+
     return (
         <>
             <div className="recipeCard">

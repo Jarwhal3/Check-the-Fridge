@@ -33,7 +33,7 @@ export async function getAllRecipes() {
 //This checks to see if the user can make a recipe given what is in their fridge.
 //Right now it only checks if they have the ingredient, it does not consider if they
 //have enough of the ingredient.
-function checkForIngredientMatch(recipe, userIngredients) {
+export function checkForIngredientMatch(recipe, userIngredients) {
 
     //This line is necessary to make the getIngredients() function work with the recipe format:
     let obj = { data: recipe }

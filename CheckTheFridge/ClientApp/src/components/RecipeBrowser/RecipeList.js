@@ -11,16 +11,14 @@ const Recipe = () => {
     const [userIngredients, setUserIngredients] = useState([]);
 
     async function getIngredientList() {
-        fetch('Ingredient/GetIngredients')
+        fetch('ApplicationUser/' + userID + '/GetUserIngredients')
             .then((results) => {
                 return results.json();
             })
             .then((data) => {
                 const userIngredients = [];
                 data.forEach((ing) => {
-                    if (ing.appUserId === userID) {
-                        userIngredients.push(ing);
-                    }
+                    userIngredients.push(ing);
                 });
                 setUserIngredients(userIngredients);
             });
