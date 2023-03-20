@@ -1,18 +1,29 @@
 import React, { Component, useState, useEffect } from 'react';
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
-import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Label } from 'reactstrap';
 
 export function AddIngredient() {
     const [ingredientList, setIngredientList] = useState([]);
     const [duplicate, setDuplicate] = useState({});
     const userID = sessionStorage.getItem('items');
     const [modal, setModal] = useState(false);
-    const [currentName, setCurrentName] = useState("");
+    const [currentIngredient, setCurrentIngredient] = useState({});
+    const [currentName, setCurrentName] = useState('');
+    const [newNotes, setNewNotes] = useState('');
+    const [newQuantity, setNewQuantity] = useState(0);
+
+
 
     const toggle = (ingredient) => {
         setModal(!modal);
+        setCurrentIngredient(ingredient);
         setCurrentName(ingredient.name);
+    }
+
+
+    const updateQuantity = (val) => {
+        setNewQuantity(newQuantity + val)
     }
 
     useEffect(() => {
@@ -56,10 +67,10 @@ export function AddIngredient() {
                 { method: 'PUT' })
                 .then((response) => {
                     if (response.ok) {
-                        console.log('Ingredient edit');
+                        console.log('Ingredient quantity duplicated edit');
                         getIngredientList();
                     }
-                    else { throw new Error('Ingredient not edit.', response.json()); }
+                    else { throw new Error('Ingredient not duplicate edit.', response.json()); }
                 })
                 .catch((error) => { console.log(error); });
 
@@ -102,9 +113,9 @@ export function AddIngredient() {
 
 
   // Edit Ingredient
-  const editIngredient = (id) => {
+  async function editIngredient(){
 
-     /* await fetch(('Ingredient/Edit/' + id + '?Description=' + ingredient.notes + '&&' + 'Quantity=' + ingredient.quantity).replace('#', '%23'),
+      await fetch(('Ingredient/Edit/' + currentIngredient.id + '?Description=' + newNotes + '&&' + 'Quantity=' + newQuantity).replace('#', '%23'),
           { method: 'PUT' })
           .then((response) => {
               if (response.ok) {
@@ -113,41 +124,49 @@ export function AddIngredient() {
               }
               else { throw new Error('Ingredient not edit.', response.json()); }
           })
-          .catch((error) => { console.log(error); });*/
+      .catch((error) => { console.log(error); });
+      setModal(!modal);
+      setNewQuantity(0);
+      setNewNotes('');
+
+
   };
 
-  return (
-    <Container>
-      <Row>
-        <React.Fragment>
-          <Col className='border rounded p-5 mx-2 mt-3'>
-            <h1 style={{ textAlign: 'center' }}>New Ingredient</h1>
-            <h5 className='m-4' style={{ textAlign: 'center' }}>
-              Enter an ingredient from your fridge (...or pantry)
-            </h5>
-            <IngredientForm onSave={checkDuplicate} />
-          </Col>
-          <Col className='border rounded p-5 mx-2 mt-3'>
-            <h1 style={{ textAlign: 'center' }}>
-              Total Ingredients: {ingredientList.length}
-            </h1>
-            {ingredientList.length > 0 ? (
-              <IngredientList
-                ingredientList={ingredientList}
-                onDelete={deleteIngredient}
-                onEdit={toggle}
-                          />
-   
-            ) : (
-              'No Ingredients Found!'
-                          )}
-                      <Modal isOpen={modal} toggle={toggle}>
-                          <ModalHeader toggle={toggle}> Edit Ingredient: {currentName} </ModalHeader>
-                          <ModalBody>
-                              <p>Notes</p>
-                              <input></input>
-                               <button>Save Changes</button>
+    return (
+        <Container>
+            <Row>
+                <React.Fragment>
+                    <Col className='border rounded p-5 mx-2 mt-3'>
+                        <h1 style={{ textAlign: 'center' }}>New Ingredient</h1>
+                        <h5 className='m-4' style={{ textAlign: 'center' }}>Enter an ingredient from your fridge (...or pantry)</h5>
+                        <IngredientForm onSave={checkDuplicate} />
+                    </Col>
+                    <Col className='border rounded p-5 mx-2 mt-3'>
+
+                        <h1 style={{ textAlign: 'center' }}>Total Ingredients: {ingredientList.length}</h1>
+
+                        {ingredientList.length > 0 ? (
+                            <IngredientList ingredientList={ingredientList} onDelete={deleteIngredient} onEdit={toggle} />
+                        ) : ('No Ingredients Found!')}
+
+                        <Modal isOpen={modal} toggle={toggle}>
+                            <ModalHeader toggle={toggle}> Edit Ingredient: {currentName} </ModalHeader>
+                            <ModalBody>
+                              <Label>Notes</Label>
+                              <Input value={newNotes} onChange={(e) => setNewNotes(e.target.value)}></Input>
+                              <Label>Quantity</Label>
+                                <Container className="d-flex justify-content-start gx-0">
+                                    <Row className="gx-0" style={{ width: "50%" }}>
+                                        <Col md={4}><Button outline color="secondary" style={{ width: "100%" }} onClick={() => updateQuantity(-1)}>-</Button></Col>
+                                        <Col md={4}><Input className="text-center" type="text" value={newQuantity} onChange={(e) => setNewQuantity(e.target.value)}></Input></Col>
+                                        <Col md={4}><Button outline color="secondary" style={{ width: "100%" }} onClick={() => updateQuantity(1)}>+</Button></Col>
+                                    </Row>
+                                </Container>
+
                           </ModalBody>
+                          <ModalFooter>
+                              <Button onClick={editIngredient}>Save Changes</Button>
+                          </ModalFooter>
                       </Modal>
           </Col>
         </React.Fragment>
