@@ -21,7 +21,6 @@ const AppRoutes = [
   },
   {
     path: '/add-ingredient',
-      //element: <IngredientList />,
     element: <AddIngredient />
   }
 ];
